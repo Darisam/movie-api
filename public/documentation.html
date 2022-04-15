@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <title>Documentation</title>
+  </head>
+
+  <body>
+    <h1>Documentation for the myFlix API</h1>
+    <p>
+      This API allows the user to access information on movies, genres and
+      directors. It allows them to open personal accounts and to create a list
+      of their favorite movies.
+    </p>
+    <p>
+      It is written in Node.js, uses a REST architecture and is based on a
+      MongoDB database.
+    </p>
+
+    <h2>Logging In</h2>
+    <p>
+      All the other methods except adding a new user require being logged in.
+    </p>
+
+    <table>
+      <tr>
+        <th scope="row">Description</th>
+        <td>Allow a user to log in</td>
+      </tr>
+      <tr>
+        <th scope="row">URL</th>
+        <td>/login</td>
+      </tr>
+      <tr>
+        <th scope="row">HTTP Method</th>
+        <td>POST</td>
+      </tr>
+      <tr>
+        <th scope="row">Parameters</th>
+        <td>
+          A username and a password, e.g. <br />
+          <code>
+            http://localhost:8080/login?Username=SpinningJenny&Password=gsgr83g3oBqg
+          </code>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Response data format</th>
+        <td>
+          A JSON object containing the users' data and a JSON web token granting
+          access to the other endpoints, e.g. <br />
+          <code>
+            { <br />
+            "user": { <br />
+            "_id": "6255b0e415d714b5154d819c", <br />
+            "Username": "SpinningJenny", <br />
+            "Password": "gsgr83g3oBqg", <br />
+            "Birthday": "1978-11-30T00:00:00.000Z", <br />
+            "FavoriteMovies": [ <br />
+            "62558f42334176f188bf4729", <br />
+            "625594a0334176f188bf472f" <br />
+            ], <br />
+            "Email": "jennifer.park@lycos.com" <br />
+            }, <br />
+            "token": <br />
+            <span class="JSONwebtoken">
+              
+            </span>
+            <br />
+            }
+          </code>
+        </td>
+      </tr>
+    </table>
+
+    <h2>Methods for getting information on films</h2>
+
+    <table>
+      <tr>
+        <th scope="row">Description</th>
+        <td>Get a list of all movies.</td>
+      </tr>
+      <tr>
+        <th scope="row">URL</th>
+        <td>/movies</td>
+      </tr>
+      <tr>
+        <th scope="row">HTTP Method</th>
+        <td>GET</td>
+      </tr>
+      <tr>
+        <th scope="row">Request body data format</th>
+        <td>none</td>
+      </tr>
+      <tr>
+        <th scope="row">Response data format</th>
+        <td>A JSON array containing every movie as an object.</td>
+      </tr>
+    </table>
+
+    <hr />
+
+    <table>
+      <tr>
+        <th scope="row">Description</th>
+        <td>Get information on a specific movie by title.</td>
+      </tr>
+      <tr>
+        <th scope="row">URL</th>
+        <td>/movies/[title]</td>
+      </tr>
+      <tr>
+        <th scope="row">HTTP Method</th>
+        <td>GET</td>
+      </tr>
+      <tr>
+        <th scope="row">Request body data format</th>
+        <td>none</td>
+      </tr>
+      <tr>
+        <th scope="row">Response data format</th>
+        <td>
+          A JSON object containing information on the movie, e.g. <br />
+          <code>
+            { <br />
+            "_id": { "$oid": "62558ba9334176f188bf471f" }, <br />
+            "Title": "The Terminator", <br />
+            "Description": "A human-like robot is sent from a future where
+            machines rule Earth to kill the mother of the future leader of the
+            resistance against the machines before he is born.", <br />
+            "Genre": { <br />
+            "Name": "Action", <br />
+            "Description": "Action movies focus on combat and violence, often
+            portrayed through impressive special effects." <br />
+            }, <br />
+            "Director": { <br />
+            "Name": "James Cameron", <br />
+            "Birth": "1954", <br />
+            "Bio": "James Cameron is an American director, screenwriter and
+            producer. In 1978 he directed his first movie, Xenogenesis. He is
+            best known for writing and directing films such as The Terminator,
+            Aliens, Titanic and Avatar." <br />
+            }, <br />
+            "ImagePath": "terminator.png", <br />
+            "Featured": false <br />
+            }
+          </code>
+        </td>
+      </tr>
+    </table>
+
+    <hr />
+
+    <table>
+      <tr>
+        <th scope="row">Description</th>
+        <td>Get information on a genre by name.</td>
+      </tr>
+      <tr>
+        <th scope="row">URL</th>
+        <td>/movies/genres/[name]</td>
+      </tr>
+      <tr>
+        <th scope="row">HTTP Method</th>
+        <td>GET</td>
+      </tr>
+      <tr>
+        <th scope="row">Request body data format</th>
+        <td>none</td>
+      </tr>
+      <tr>
+        <th scope="row">Response data format</th>
+        <td>
+          A JSON object containing information on the genre, e.g. <br />
+          <code>
+            { <br />
+            "Name": "Action", <br />
+            "Description": "Action movies focus on combat and violence, often
+            portrayed through impressive special effects." <br />
+            }
+          </code>
+        </td>
+      </tr>
+    </table>
+
+    <hr />
+
+    <table>
+      <tr>
+        <th scope="row">Description</th>
+        <td>Get information on a director by name</td>
+      </tr>
+      <tr>
+        <th scope="row">URL</th>
+        <td>/movies/directors/[name]</td>
+      </tr>
+      <tr>
+        <th scope="row">HTTP Method</th>
+        <td>GET</td>
+      </tr>
+      <tr>
+        <th scope="row">Request body data format</th>
+        <td>none</td>
+      </tr>
+      <tr>
+        <th scope="row">Response data format</th>
+        <td>
+          A JSON object containing information on the director, e.g. <br />
+          <code>
+            { <br />
+            "Name": "James Cameron", <br />
+            "Birth": "1954", <br />
+            "Bio": "James Cameron is an American director, screenwriter and
+            producer. In 1978 he directed his first movie, Xenogenesis. He is
+            best known for writing and directing films such as The Terminator,
+            Aliens, Titanic and Avatar." <br />
+            }
+          </code>
+        </td>
+      </tr>
+    </table>
+
+    <h2>Methods for managing user data</h2>
+
+    <table>
+      <tr>
+        <th scope="row">Description</th>
+        <td>Get data of a single user by username.</td>
+      </tr>
+      <tr>
+        <th scope="row">URL</th>
+        <td>/users/[username]</td>
+      </tr>
+      <tr>
+        <th scope="row">HTTP Method</th>
+        <td>GET</td>
+      </tr>
+      <tr>
+        <th scope="row">Request body data format</th>
+        <td>none</td>
+      </tr>
+      <tr>
+        <th scope="row">Response data format</th>
+        <td>
+          A JSON object containing the data of the user, e.g. <br />
+          <code>
+            { <br />
+            "_id": "6255ac9815d714b5154d8191", <br />
+            "Username": "RobertB", <br />
+            "Password": "jBqUEXPHFItbY7gRd4Ol", <br />
+            "Birthday": "1978-04-07T00:00:00.000Z", <br />
+            "FavoriteMovies": [ <br />
+            "62558d0c334176f188bf4723", <br />
+            "62558cb3334176f188bf4721", <br />
+            "62558f42334176f188bf4729" <br />
+            ], <br />
+            "Email": "robert.brown@gmail.com" <br />
+            }
+          </code>
+        </td>
+      </tr>
+    </table>
+
+    <hr />
+
+    <table>
+      <tr>
+        <th scope="row">Description</th>
+        <td>Add a new user</td>
+      </tr>
+      <tr>
+        <th scope="row">URL</th>
+        <td>/users</td>
+      </tr>
+      <tr>
+        <th scope="row">HTTP Method</th>
+        <td>POST</td>
+      </tr>
+      <tr>
+        <th scope="row">Request body data format</th>
+        <td>
+          A JSON object containing the username, password, email address and
+          optionally birthday of the new user, e.g. <br />
+          <code>
+            { <br />
+            "Username": "Carla04", <br />
+            "Password": "KafAFSEfjwf", <br />
+            "Email": "clara.miller@yahoo.com", <br />
+            "Birthday": "2001-02-05" <br />
+            }
+          </code>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Response data format</th>
+        <td>
+          A JSON object containing the data of newly added user, e.g. <br />
+          <code>
+            { <br />
+            "Username": "Carla04", <br />
+            "Email": "clara.miller@yahoo.com", <br />
+            "Password": "KafAFSEfjwf", <br />
+            "Birthday": "2001-02-05T00:00:00.000Z", <br />
+            "FavoriteMovies": [], <br />
+            "_id": "6257dcba3ad2a32d6dc68100", <br />
+            "__v": 0 <br />
+            }
+          </code>
+        </td>
+      </tr>
+    </table>
+
+    <hr />
+
+    <table>
+      <tr>
+        <th scope="row">Description</th>
+        <td>Remove an existing user with a given username.</td>
+      </tr>
+      <tr>
+        <th scope="row">URL</th>
+        <td>users/[username]</td>
+      </tr>
+      <tr>
+        <th scope="row">HTTP Method</th>
+        <td>DELETE</td>
+      </tr>
+      <tr>
+        <th scope="row">Request body data format</th>
+        <td>none</td>
+      </tr>
+      <tr>
+        <th scope="row">Response data format</th>
+        <td>A text message confirming that the user has been removed.</td>
+      </tr>
+    </table>
+
+    <hr />
+
+    <table>
+      <tr>
+        <th scope="row">Description</th>
+        <td>Change the data of a user with a given username.</td>
+      </tr>
+      <tr>
+        <th scope="row">URL</th>
+        <td>/users/[username]</td>
+      </tr>
+      <tr>
+        <th scope="row">HTTP Method</th>
+        <td>PUT</td>
+      </tr>
+      <tr>
+        <th scope="row">Request body data format</th>
+        <td>
+          A JSON object containg the data to be updated, e.g. <br />
+          <code>
+            { <br />
+            "Password": "owi347938fnsdkf", <br />
+
+            }
+          </code>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Response data format</th>
+        <td>
+          A JSON object containing the updated data of the user, e.g. <br />
+          <code>
+            { <br />
+            "_id": "6257dcba3ad2a32d6dc68100", <br />
+            "Username": "Carla04", <br />
+            "Email": "clara.miller@yahoo.com", <br />
+            "Password": "owi347938fnsdkf", <br />
+            "Birthday": "2001-02-05T00:00:00.000Z", <br />
+            "FavoriteMovies": [], <br />
+            "__v": 0 <br />
+            }
+          </code>
+        </td>
+      </tr>
+    </table>
+
+    <h2>Methods for managing a user's list of favorite movies.</h2>
+
+    <table>
+      <tr>
+        <th scope="row">Description</th>
+        <td>Get the list of a user's favorite movies.</td>
+      </tr>
+      <tr>
+        <th scope="row">URL</th>
+        <td>/users/[username]/favorites</td>
+      </tr>
+      <tr>
+        <th scope="row">HTTP Method</th>
+        <td>GET</td>
+      </tr>
+      <tr>
+        <th scope="row">Request body data format</th>
+        <td>none</td>
+      </tr>
+      <tr>
+        <th scope="row">Response data format</th>
+        <td>
+          A JSON array containing the ObjectId of every movie., e.g. <br />
+          <code>
+            [ <br />
+            "62558d0c334176f188bf4723", <br />
+            "62558cb3334176f188bf4721", <br />
+            "62558f42334176f188bf4729" <br />
+            ]
+          </code>
+        </td>
+      </tr>
+    </table>
+
+    <hr />
+
+    <table>
+      <tr>
+        <th scope="row">Description</th>
+        <td>
+          Add a new movie of a given ObjectId a user's list of favorite movies.
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">URL</th>
+        <td>/users/[username]/favorites/[ObjectId]</td>
+      </tr>
+      <tr>
+        <th scope="row">HTTP Method</th>
+        <td>PUT</td>
+      </tr>
+      <tr>
+        <th scope="row">Request body data format</th>
+        <td>none</td>
+      </tr>
+      <tr>
+        <th scope="row">Response data format</th>
+        <td>
+          The updated list of the user's favorite movies as a JSON array, e.g
+          <br />
+          <code>
+            [ <br />
+            "62558cb3334176f188bf4721", <br />
+            "62558966334176f188bf471d" <br />
+            ]
+          </code>
+        </td>
+      </tr>
+    </table>
+
+    <hr />
+
+    <table>
+      <tr>
+        <th scope="row">Description</th>
+        <td>
+          Remove a movie with a given ObjectId from a user's list of favorite
+          movies.
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">URL</th>
+        <td>/users/[username]/favorites/[ObjectId]</td>
+      </tr>
+      <tr>
+        <th scope="row">HTTP Method</th>
+        <td>DELETE</td>
+      </tr>
+      <tr>
+        <th scope="row">Request body data format</th>
+        <td>none</td>
+      </tr>
+      <tr>
+        <th scope="row">Response data format</th>
+        <td>A text message confirming that the movie has been removed.</td>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 2rem;
+}
+
+h1,
+h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  margin-top: 3rem;
+}
+
+hr {
+  width: 80%;
+  margin: 2.5rem auto;
+}
+
+table {
+  margin-top: 2rem;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+th,
+td {
+  padding: 0.375em 0.875em;
+}
+
+th {
+  text-align: right;
+  vertical-align: top;
+}
+
+td {
+  max-width: 40rem;
+}
+
+.JSONwebtoken {
+  word-wrap: break-word;
+}
