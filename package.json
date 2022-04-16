@@ -4,7 +4,8 @@
   "description": "This repository will contain an API created with Node.js that will allow users to access information about movies, genres, directors, etc.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
