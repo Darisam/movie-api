@@ -19,25 +19,7 @@ mongoose.connect('mongodb://localhost:27017/myFlixDB', {
 const allowedOrigins = ['http:/localhost:8080'];
 
 app.use(morgan('common'));
-
-// Not quite where the instruction says to place it, but it makes sense to me.
-
 app.use(cors());
-/*app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) === -1) {
-        let message =
-          'The CORS policy for this application doesn’t allow access from origin ' +
-          origin;
-        return callback(new Error(message), false);
-      }
-      return callback(null, true);
-    }
-  })
-);*/
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static('public'));
@@ -120,19 +102,6 @@ app.get(
 );
 
 // Methods applying to users
-
-// Get all users. To be deleted once the project is finished.
-
-app.get('/users', (req, res) => {
-  Users.find({}, (err, userList) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Error' + err);
-    } else {
-      res.status(200).json(userList);
-    }
-  });
-});
 
 // Get data of a single user by username
 
