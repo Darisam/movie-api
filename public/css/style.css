@@ -4,6 +4,7 @@
 
 body {
   font-family: Arial, sans-serif;
+  max-width: 900px;
   padding-left: 1rem;
   padding-right: 1rem;
   padding-bottom: 2rem;
@@ -43,6 +44,8 @@ td {
   max-width: 40rem;
 }
 
-.JSONwebtoken {
-  word-wrap: break-word;
+@media all and (max-width: 450px) {
+  code {
+    font-size: 0.75rem;
+  }
 }
