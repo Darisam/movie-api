@@ -5,6 +5,8 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   cors = require('cors');
 
+const { check, validationResult } = require('express-validator');
+
 const app = express();
 const Movies = Models.Movie;
 const Users = Models.User;
@@ -153,41 +155,88 @@ app.get(
 
 // Add a new user
 
-app.post('/users', (req, res) => {
-  let hashedPassword = Users.hashPassword(req.body.Password);
-  Users.findOne({ Username: req.body.Username }, (err, user) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Error' + err);
-    } else if (user) {
-      res.status(400).send(req.body.Username + ' already exists.');
-    } else {
-      Users.create(
-        {
-          Username: req.body.Username,
-          Password: hashedPassword,
-          Email: req.body.Email,
-          Birthday: req.body.Birthday,
-        },
-        (err, newUser) => {
-          if (err) {
-            console.error(err);
-            res.status(500).send('Error' + err);
-          } else {
-            res.status(201).json(newUser);
-          }
-        }
-      );
+app.post(
+  '/users',
+  check('Username')
+    .isLength({ min: 5 })
+    .withMessage('Username must be at least five characters long.')
+    .isAlphanumeric()
+    .withMessage('Username must contain only alphanumeric characters.'),
+  check('Password')
+    .isLength({ min: 8 })
+    .withMessage('Password needs to be at least eight charcters long.'),
+  check('Email')
+    .isEmail()
+    .withMessage('Email does nor appear to be valid.'),
+  check('Birthday')
+    .optional()
+    .isDate()
+    .withMessage('Invalid date. Date should be of the form YYYY-MM-DD.'),
+  (req, res) => {
+    let errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
     }
-  });
-});
+
+    let hashedPassword = Users.hashPassword(req.body.Password);
+
+    Users.findOne({ Username: req.body.Username }, (err, user) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Error' + err);
+      } else if (user) {
+        res.status(400).send(req.body.Username + ' already exists.');
+      } else {
+        Users.create(
+          {
+            Username: req.body.Username,
+            Password: hashedPassword,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday,
+          },
+          (err, newUser) => {
+            if (err) {
+              console.error(err);
+              res.status(500).send('Error' + err);
+            } else {
+              res.status(201).json(newUser);
+            }
+          }
+        );
+      }
+    });
+  }
+);
 
 // Change user's data
 
 app.put(
   '/users/:Username',
   passport.authenticate('jwt', { session: false }),
+  check('Username')
+    .optional()
+    .isLength({ min: 5 })
+    .isAlphanumeric()
+    .withMessage('Username must contain only alphanumeric characters long.'),
+  check('Password')
+    .optional()
+    .isLength({ min: 8 })
+    .withMessage('Password needs to be at least eight charcters long.'),
+  check('Email')
+    .optional()
+    .isEmail()
+    .withMessage('Email does nor appear to be valid.'),
+  check('Birthday')
+    .optional()
+    .isDate()
+    .withMessage('Invalid date. Date should be of the form YYYY-MM-DD.'),
   (req, res) => {
+
+    let errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
     Users.findOneAndUpdate(
       { Username: req.params.Username },
       {
