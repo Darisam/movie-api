@@ -11,8 +11,8 @@ const app = express();
 const Movies = Models.Movie;
 const Users = Models.User;
 
-/*mongoose.connect('mongodb://localhost:27017/myFlixDB', {
-  useNewUrlParser: true,
+// mongoose.connect('mongodb://localhost:27017/myFlixDB', {
+/*  useNewUrlParser: true,
   useUnifiedTopology: true,
 });*/
 
@@ -191,7 +191,7 @@ app.put(
     .optional()
     .isLength({ min: 5 })
     .isAlphanumeric()
-    .withMessage('Username must contain only alphanumeric characters long.'),
+    .withMessage('Username must contain only alphanumeric characters.'),
   check('Password')
     .optional()
     .isLength({ min: 8 })
