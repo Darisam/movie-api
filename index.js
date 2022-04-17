@@ -11,10 +11,10 @@ const app = express();
 const Movies = Models.Movie;
 const Users = Models.User;
 
-mongoose.connect('mongodb://localhost:27017/myFlixDB', {
+/*mongoose.connect('mongodb://localhost:27017/myFlixDB', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-});
+});*/
 
 const allowedOrigins = ['http:/localhost:8080'];
 
