@@ -190,6 +190,7 @@ app.put(
   check('Username')
     .optional()
     .isLength({ min: 5 })
+    .withMessage('Username must be at least five characters long.')
     .isAlphanumeric()
     .withMessage('Username must contain only alphanumeric characters.'),
   check('Password')
