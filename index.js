@@ -16,6 +16,11 @@ const Users = Models.User;
   useUnifiedTopology: true,
 });*/
 
+mongoose.connect(process.env.CONNECTION_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
 const allowedOrigins = ['http:/localhost:8080'];
 
 app.use(morgan('common'));
