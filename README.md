@@ -1,6 +1,6 @@
 # movie-api
 
-This repository contains an API created with Node.js that allows users to access information about movies, genres, directors, etc. The data are stored in a Mongo databse and the API interacts with it via Mongoose.
+This repository contains an API created with Node.js that allows users to access information about movies, genres, directors, etc. The data are stored in a Mongo database and the API interacts with it via Mongoose.
 
 A live version of the API can be found at https://klaus-movies.herokuapp.com/.
 
