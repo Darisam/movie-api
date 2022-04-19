@@ -21,7 +21,7 @@ mongoose.connect(process.env.CONNECTION_URI, {
   useUnifiedTopology: true,
 });
 
-const allowedOrigins = ['http:/localhost:8080'];
+// const allowedOrigins = ['http:/localhost:8080'];
 
 app.use(morgan('common'));
 app.use(cors());
