@@ -16,7 +16,12 @@ mongoose.connect('mongodb://localhost:27017/myFlixDB', {
   useUnifiedTopology: true,
 });
 
-const allowedOrigins = ['http:/localhost:8080'];
+/* mongoose.connect(process.env.CONNECTION_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}); */
+
+// const allowedOrigins = ['http:/localhost:8080'];
 
 app.use(morgan('common'));
 app.use(cors());
@@ -136,18 +141,21 @@ app.post(
     .withMessage('Password needs to be at least eight charcters long.'),
   check('Email')
     .isEmail()
-    .withMessage('Email does nor appear to be valid.'),
+    .withMessage('Email does not appear to be valid.'),
   check('Birthday')
     .optional()
     .isDate()
     .withMessage('Invalid date. Date should be of the form YYYY-MM-DD.'),
   (req, res) => {
+
     let errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
 
     let hashedPassword = Users.hashPassword(req.body.Password);
+
+    // Look whether user already exits, if not, add the new user
 
     Users.findOne({ Username: req.body.Username }, (err, user) => {
       if (err) {
@@ -185,8 +193,9 @@ app.put(
   check('Username')
     .optional()
     .isLength({ min: 5 })
+    .withMessage('Username must be at least five characters long.')
     .isAlphanumeric()
-    .withMessage('Username must contain only alphanumeric characters long.'),
+    .withMessage('Username must contain only alphanumeric characters.'),
   check('Password')
     .optional()
     .isLength({ min: 8 })
@@ -194,7 +203,7 @@ app.put(
   check('Email')
     .optional()
     .isEmail()
-    .withMessage('Email does nor appear to be valid.'),
+    .withMessage('Email does not appear to be valid.'),
   check('Birthday')
     .optional()
     .isDate()
@@ -206,12 +215,14 @@ app.put(
       return res.status(422).json({ errors: errors.array() });
     }
 
+    let hashedPassword = Users.hashPassword(req.body.Password);
+
     Users.findOneAndUpdate(
       { Username: req.params.Username },
       {
         $set: {
           Username: req.body.Username,
-          Password: req.body.Password,
+          Password: hashedPassword,
           Email: req.body.Email,
           Birthday: req.body.Birthday,
         },

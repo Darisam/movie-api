@@ -22,7 +22,8 @@
 
     <h2>Logging In</h2>
     <p>
-      All the other methods except adding a new user require being logged in.
+      All the other methods except adding a new user or getting documentation
+      require being logged in.
     </p>
 
     <table>
@@ -43,7 +44,8 @@
         <td>
           A username and a password, e.g. <br />
           <code>
-            http://localhost:8080/<wbr>login?Username=SpinningJenny&Password=gsgr83g3oBqg
+            https://klaus-movies.herokuapp.com/<wbr />login?<wbr />Username=SpinningJenny&
+            <wbr />Password=gsgr83g3oBqg
           </code>
         </td>
       </tr>
@@ -425,7 +427,7 @@
       </tr>
       <tr>
         <th scope="row">URL</th>
-        <td>/users/<wbr>[username]/<wbr>favorites/<wbr>[ObjectId]</td>
+        <td>/users/<wbr />[username]/<wbr />favorites/<wbr />[ObjectId]</td>
       </tr>
       <tr>
         <th scope="row">HTTP Method</th>
@@ -462,7 +464,7 @@
       </tr>
       <tr>
         <th scope="row">URL</th>
-        <td>/users/<wbr>[username]/<wbr>favorites/<wbr>[ObjectId]</td>
+        <td>/users/<wbr />[username]/<wbr />favorites/<wbr />[ObjectId]</td>
       </tr>
       <tr>
         <th scope="row">HTTP Method</th>
@@ -479,3 +481,29 @@
     </table>
   </body>
 </html>
+
+<h2>Getting Documentation</h2>
+
+<table>
+  <tr>
+    <th scope="row">Description</th>
+    <td>Get documentation describing the myFlix API and the associated
+      endpoints.</td>
+  </tr>
+  <tr>
+    <th scope="row">URL</th>
+    <td>/documentation.html</td>
+  </tr>
+  <tr>
+    <th scope="row">HTTP Method</th>
+    <td>GET</td>
+  </tr>
+  <tr>
+    <th scope="row">Request body data format</th>
+    <td>none</td>
+  </tr>
+  <tr>
+    <th scope="row">Response data format</th>
+    <td>An HTML file containing the documentation for this API.</td>
+  </tr>
+</table>
