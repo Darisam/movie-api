@@ -154,6 +154,8 @@ app.post(
 
     let hashedPassword = Users.hashPassword(req.body.Password);
 
+    // Look whether user already exits, if not, add the new user
+
     Users.findOne({ Username: req.body.Username }, (err, user) => {
       if (err) {
         console.error(err);
