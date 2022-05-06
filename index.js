@@ -42,7 +42,7 @@ app.get('/', (req, res) => {
 
 app.get(
   '/movies',
-  //passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false }),
   function(req, res) {
     Movies.find({}, (err, movieList) => {
       if (err) {
