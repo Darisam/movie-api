@@ -43,7 +43,7 @@ app.get('/', (req, res) => {
 app.get(
   '/movies',
   passport.authenticate('jwt', { session: false }),
-  function(req, res) {
+  function (req, res) {
     Movies.find({}, (err, movieList) => {
       if (err) {
         console.error(err);
@@ -108,6 +108,23 @@ app.get(
 
 // Methods applying to users
 
+// Get the data of all users
+
+app.get(
+  '/users',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Users.find({}, (err, userList) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Error' + err);
+      } else {
+        res.status(200).json(userList);
+      }
+    });
+  }
+);
+
 // Get data of a single user by username
 
 app.get(
@@ -139,15 +156,12 @@ app.post(
   check('Password')
     .isLength({ min: 8 })
     .withMessage('Password needs to be at least eight charcters long.'),
-  check('Email')
-    .isEmail()
-    .withMessage('Email does not appear to be valid.'),
+  check('Email').isEmail().withMessage('Email does not appear to be valid.'),
   check('Birthday')
     .optional()
     .isDate()
     .withMessage('Invalid date. Date should be of the form YYYY-MM-DD.'),
   (req, res) => {
-
     let errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
@@ -209,7 +223,6 @@ app.put(
     .isDate()
     .withMessage('Invalid date. Date should be of the form YYYY-MM-DD.'),
   (req, res) => {
-
     let errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
