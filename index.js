@@ -40,20 +40,19 @@ app.get('/', (req, res) => {
 
 // Getting information on movies.
 
-app.get(
-  '/movies',
-  passport.authenticate('jwt', { session: false }),
-  function (req, res) {
-    Movies.find({}, (err, movieList) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send('Error' + err);
-      } else {
-        res.status(200).json(movieList);
-      }
-    });
-  }
-);
+app.get('/movies', passport.authenticate('jwt', { session: false }), function(
+  req,
+  res
+) {
+  Movies.find({}, (err, movieList) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error' + err);
+    } else {
+      res.status(200).json(movieList);
+    }
+  });
+});
 
 app.get(
   '/movies/:title',
@@ -110,7 +109,7 @@ app.get(
 
 // Get the data of all users
 
-app.get(
+/*app.get(
   '/users',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
@@ -123,7 +122,7 @@ app.get(
       }
     });
   }
-);
+);*/
 
 // Get data of a single user by username
 
@@ -232,28 +231,65 @@ app.put(
       req.body.Password = Users.hashPassword(req.body.Password);
     }
 
-    Users.findOneAndUpdate(
-      { Username: req.params.Username },
-      {
-        $set: {
-          Username: req.body.Username,
-          Password: req.body.Password,
-          Email: req.body.Email,
-          Birthday: req.body.Birthday,
-        },
-      },
-      { new: true },
-      (err, updatedUser) => {
+    // See whether the username is already taken, if not, then update
+    // OK, the  style is horrible
+
+    if (req.body.Username) {
+      Users.findOne({ Username: req.body.Username }, (err, user) => {
         if (err) {
           console.error(err);
-          res.status(500).send('Error: ' + err);
-        } else if (updatedUser) {
-          res.status(200).json(updatedUser);
+          res.status(500).send('Error' + err);
+        } else if (user) {
+          res.status(400).send(req.body.Username + ' already exists.');
         } else {
-          res.status(404).send(req.params.Username + ' was not found.');
+          Users.findOneAndUpdate(
+            { Username: req.params.Username },
+            {
+              $set: {
+                Username: req.body.Username,
+                Password: req.body.Password,
+                Email: req.body.Email,
+                Birthday: req.body.Birthday,
+              },
+            },
+            { new: true },
+            (err, updatedUser) => {
+              if (err) {
+                console.error(err);
+                res.status(500).send('Error: ' + err);
+              } else if (updatedUser) {
+                res.status(200).json(updatedUser);
+              } else {
+                res.status(404).send(req.params.Username + ' was not found.');
+              }
+            }
+          );
         }
-      }
-    );
+      });
+    } else {
+      Users.findOneAndUpdate(
+        { Username: req.params.Username },
+        {
+          $set: {
+            Username: req.body.Username,
+            Password: req.body.Password,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday,
+          },
+        },
+        { new: true },
+        (err, updatedUser) => {
+          if (err) {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+          } else if (updatedUser) {
+            res.status(200).json(updatedUser);
+          } else {
+            res.status(404).send(req.params.Username + ' was not found.');
+          }
+        }
+      );
+    }
   }
 );
 
